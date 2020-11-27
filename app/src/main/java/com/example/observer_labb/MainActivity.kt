@@ -15,10 +15,8 @@ import kotlin.properties.Delegates
 class MainActivity : AppCompatActivity() {
 
     val url = URL("https://quote-garden.herokuapp.com/api/v2/quotes/random")
-//    var quoteItem = Quote("","")
 
     lateinit var quoteText: TextView
-
 
     var quote by Delegates.observable<String>("") { property, oldValue, newValue ->
 
@@ -48,10 +46,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     @RequiresApi(Build.VERSION_CODES.N)
     fun GetQuoteFromAPI() {
-        println("bbb")
 
         val thread = Thread(Runnable {
             try {
@@ -59,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                     requestMethod = "GET"
                     inputStream.bufferedReader().use {
                         it.lines().forEach { line ->
-                            println(line);
+
                             val jsonObject = JSONObject(line)
 
                             if (jsonObject["statusCode"] == 200) {
@@ -68,12 +64,11 @@ class MainActivity : AppCompatActivity() {
                                 val quoteText = quoteJson["quoteText"] as String
                                 println(quoteText)
 
-//                                quoteItem.text = quoteText.toString()
-
                                 quote = quoteText
-
                             }
-
+                            else {
+                                quote = "Error retrieving data from api"
+                            }
 
                         }
                     }
